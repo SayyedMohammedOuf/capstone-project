@@ -114,9 +114,9 @@ jobs:
 workflows:
   default:
     jobs:
-    - Liniting
+    - Linting
     - Testing:
-        requires: [Liniting]
+        requires: [Linting]
     - push_docker_containers_to_dockerhub:
         requires: [Testing]
     - create_EKS_cluster:
