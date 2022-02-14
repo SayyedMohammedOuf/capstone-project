@@ -70,7 +70,7 @@ jobs:
             docker tag capstone-project-$CIRCLE_WORKFLOW_ID sayyedmo/capstone-project:$CIRCLE_WORKFLOW_ID
             # Push image to a docker repository
             docker push sayyedmo/capstone-project:$CIRCLE_WORKFLOW_ID
-  create_EKS_cluster:
+  Create EKS Cluster:
     docker:
       - image: python:3.7-alpine3.11
     working_directory: ~/repo
@@ -87,7 +87,7 @@ jobs:
           command: |
             eksctl create cluster --name=myEKSCluster-$CIRCLE_WORKFLOW_ID
 
-  deploy_app_to_cluster:
+  Deploy App To Cluster:
     docker:
       - image: python:3.7-alpine3.11
     working_directory: ~/repo
@@ -119,7 +119,7 @@ workflows:
         requires: [Linting]
     - Push Docker Container To Dockerhub Repo:
         requires: [Testing]
-    - create_EKS_cluster:
+    - Create EKS Cluster:
         requires: [Push Docker Container To Dockerhub Repo]
-    - deploy_app_to_cluster:
-        requires: [create_EKS_cluster]
+    - Deploy App To Cluster:
+        requires: [Create EKS Cluster]
