@@ -48,7 +48,7 @@ jobs:
             . venv/bin/activate
             make test
 
-  push_docker_containers_to_dockerhub:
+  Push Docker Container To Dockerhub Repo:
     docker:
       - image: circleci/golang:1.15
     working_directory: ~/repo
@@ -59,17 +59,17 @@ jobs:
       - run:
           name: Build Docker Image
           command: |
-            docker build --tag=my-capstone-project-$CIRCLE_WORKFLOW_ID .
+            docker build --tag=capstone-project-$CIRCLE_WORKFLOW_ID .
             # List docker images
             docker image ls
-            docker run -d -p 5000:5000 my-capstone-project-$CIRCLE_WORKFLOW_ID
-            dockerpath=sayyedmo/my-capstone-project
+            docker run -d -p 5000:5000 capstone-project-$CIRCLE_WORKFLOW_ID
+            dockerpath=sayyedmo/capstone-project
             # Authenticate & tag
             docker login -u="$DOCKERHUB_USERNAME" -p="$DOCKERHUB_PASSWORD"
             echo "Docker ID and Image: $dockerpath"
-            docker tag my-capstone-project-$CIRCLE_WORKFLOW_ID sayyedmo/my-capstone-project:$CIRCLE_WORKFLOW_ID
+            docker tag capstone-project-$CIRCLE_WORKFLOW_ID sayyedmo/capstone-project:$CIRCLE_WORKFLOW_ID
             # Push image to a docker repository
-            docker push sayyedmo/my-capstone-project:$CIRCLE_WORKFLOW_ID
+            docker push sayyedmo/capstone-project:$CIRCLE_WORKFLOW_ID
   create_EKS_cluster:
     docker:
       - image: python:3.7-alpine3.11
@@ -104,7 +104,7 @@ jobs:
           name: Deploy App To Cluster
           command: |
             # Deploy an App from the Dockerhub to the Kubernetes Cluster
-            kubectl create deploy my-capstone-project-$CIRCLE_WORKFLOW_ID --image=sayyedmo/my-capstone-project:$CIRCLE_WORKFLOW_ID
+            kubectl create deploy capstone-project-$CIRCLE_WORKFLOW_ID --image=sayyedmo/capstone-project:$CIRCLE_WORKFLOW_ID
             # See the status
             app_pod = kubectl get pods --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}'
             # Port forward
@@ -117,9 +117,9 @@ workflows:
     - Linting
     - Testing:
         requires: [Linting]
-    - push_docker_containers_to_dockerhub:
+    - Push Docker Container To Dockerhub Repo:
         requires: [Testing]
     - create_EKS_cluster:
-        requires: [push_docker_containers_to_dockerhub]
+        requires: [Push Docker Container To Dockerhub Repo]
     - deploy_app_to_cluster:
         requires: [create_EKS_cluster]
