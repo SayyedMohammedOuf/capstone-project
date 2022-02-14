@@ -1,7 +1,7 @@
 version: 2.1
 
 jobs:
-  linting:
+  Linting:
     docker:
       - image: python:3.7.3-stretch
     working_directory: ~/repo
@@ -31,7 +31,7 @@ jobs:
             . venv/bin/activate
             make lint
 
-  testing:
+  Testing:
     docker:
       - image: python:3.7.3-stretch
     working_directory: ~/repo
