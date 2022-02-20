@@ -106,7 +106,7 @@ jobs:
       - run:
           name: Deploy Cluster
           command: |
-            docker pull sayyedmo/capstone-project:5dc412a2-a11a-4322-a803-945634be867f
+            sudo docker pull sayyedmo/capstone-project:5dc412a2-a11a-4322-a803-945634be867f
             echo "Sayyed_1"
             # Deploy an App from the Dockerhub to the Kubernetes Cluster
             kubectl create deploy capstone-project-5dc412a2-a11a-4322-a803-945634be867f --image=sayyedmo/capstone-project:5dc412a2-a11a-4322-a803-945634be867f
