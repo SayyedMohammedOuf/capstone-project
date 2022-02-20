@@ -87,28 +87,34 @@ jobs:
           command: |
             eksctl create cluster --name=myEKSCluster-$CIRCLE_WORKFLOW_ID
 
-  Deploy App To Cluster:
+  Deploy Cluster to EKS:
     docker:
       - image: python:3.7-alpine3.11
     working_directory: ~/repo
     steps:
       - checkout
       - run:
-          name: Install Kubectl Tool
+          name: Install Kubectl Tool & docker
           command: |
-            apk add --update curl
+            apk add --update curl docker openr
             curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
             install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
             kubectl version --client
       - run:
-          name: Deploy App To Cluster
+          name: Deploy Cluster
           command: |
+            docker pull sayyedmo/capstone-project:$CIRCLE_WORKFLOW_ID
+            echo "Sayyed_1"
             # Deploy an App from the Dockerhub to the Kubernetes Cluster
             kubectl create deploy capstone-project-$CIRCLE_WORKFLOW_ID --image=sayyedmo/capstone-project:$CIRCLE_WORKFLOW_ID
+            echo "Sayyed_2"
             # See the status
             app_pod = kubectl get pods --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}'
+            echo "APP_POD: "
+            echo $app_pod
             # Port forward
             kubectl port-forward $app_pod --address 0.0.0.0 5000:5000
+            echo "FINAL"
 
 
 workflows:
@@ -121,5 +127,5 @@ workflows:
         requires: [Testing]
     - Create EKS Cluster:
         requires: [Push Docker Container To Dockerhub Repo]
-    - Deploy App To Cluster:
+    - Deploy Cluster to EKS:
         requires: [Create EKS Cluster]

@@ -12,9 +12,9 @@
 
 
 
-#### Sorry for submitting the project with missing requirements, but I have posted the issues I have in the knowledge center but I didn't get any help to proceed with the project, please check the following links foor more details about the issue I have now:
+#### Sorry for submitting the project with missing requirements, but I have posted the issues I have in the knowledge center but I did not get any help to proceed with the project, please check the following links for more details about the issue I have now:
 
 - https://knowledge.udacity.com/questions/799821
 - https://knowledge.udacity.com/questions/798559
 
-##### So I decided to submit the project, to get help from the reviewers.  s
+##### So I decided to submit the project, to get help from the reviewers.
