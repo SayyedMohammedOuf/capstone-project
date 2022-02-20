@@ -92,7 +92,7 @@ jobs:
       - image: python:3.7-alpine3.13
     working_directory: ~/repo
     steps:
-      - checkouts
+      - checkout
       - run:
           name: Install Kubectl Tool & docker
           command: |
