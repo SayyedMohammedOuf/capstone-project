@@ -90,6 +90,7 @@ jobs:
   Deploy Cluster to EKS:
     docker:
       - image: circleci/python:2.7.14
+        user: root
     working_directory: ~/repo
     steps:
       - checkout
