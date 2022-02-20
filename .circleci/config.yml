@@ -98,6 +98,7 @@ jobs:
           name: Install Kubectl Tool & docker
           command: |
             apk add --update sudo tar gzip curl
+            apk add openrc
             apk update
             apk add docker docker-compose
             service docker start
