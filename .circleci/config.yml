@@ -85,7 +85,8 @@ jobs:
       - run:
           name: Create EKS Cluster
           command: |
-            eksctl create cluster --name=myEKSCluster-$CIRCLE_WORKFLOW_ID
+            id = "5dc412a2-a11a-4322-a803-945634be867f"
+            eksctl create cluster --name=myEKSCluster-$id
 
   Deploy Cluster to EKS:
     docker:
@@ -103,10 +104,11 @@ jobs:
       - run:
           name: Deploy Cluster
           command: |
-            docker pull sayyedmo/capstone-project:$CIRCLE_WORKFLOW_ID
+            id = "5dc412a2-a11a-4322-a803-945634be867f"
+            docker pull sayyedmo/capstone-project:$id
             echo "Sayyed_1"
             # Deploy an App from the Dockerhub to the Kubernetes Cluster
-            kubectl create deploy capstone-project-$CIRCLE_WORKFLOW_ID --image=sayyedmo/capstone-project:$CIRCLE_WORKFLOW_ID
+            kubectl create deploy capstone-project-$id --image=sayyedmo/capstone-project:$id
             echo "Sayyed_2"
             # See the status
             app_pod = kubectl get pods --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}'
@@ -120,12 +122,12 @@ jobs:
 workflows:
   default:
     jobs:
-    - Linting
-    - Testing:
-        requires: [Linting]
-    - Push Docker Container To Dockerhub Repo:
-        requires: [Testing]
-    - Create EKS Cluster:
-        requires: [Push Docker Container To Dockerhub Repo]
-    - Deploy Cluster to EKS:
-        requires: [Create EKS Cluster]
+#      - Linting
+#      - Testing:
+#          requires: [Linting]
+#      - Push Docker Container To Dockerhub Repo:
+#          requires: [Testing]
+      - Create EKS Cluster
+#          requires: [Push Docker Container To Dockerhub Repo]
+      - Deploy Cluster to EKS:
+          requires: [Create EKS Cluster]
