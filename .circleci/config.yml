@@ -85,8 +85,7 @@ jobs:
       - run:
           name: Create EKS Cluster
           command: |
-            wfid = "5dc412a2-a11a-4322-a803-945634be867f"
-            eksctl create cluster --name=myEKSCluster-$wfid
+            eksctl create cluster --name=myEKSCluster-5dc412a2-a11a-4322-a803-945634be867f
 
   Deploy Cluster to EKS:
     docker:
@@ -104,11 +103,10 @@ jobs:
       - run:
           name: Deploy Cluster
           command: |
-            wfid = "5dc412a2-a11a-4322-a803-945634be867f"
-            docker pull sayyedmo/capstone-project:$wfid
+            docker pull sayyedmo/capstone-project:5dc412a2-a11a-4322-a803-945634be867f
             echo "Sayyed_1"
             # Deploy an App from the Dockerhub to the Kubernetes Cluster
-            kubectl create deploy capstone-project-$wfid --image=sayyedmo/capstone-project:$wfid
+            kubectl create deploy capstone-project-5dc412a2-a11a-4322-a803-945634be867f --image=sayyedmo/capstone-project:5dc412a2-a11a-4322-a803-945634be867f
             echo "Sayyed_2"
             # See the status
             app_pod = kubectl get pods --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}'
