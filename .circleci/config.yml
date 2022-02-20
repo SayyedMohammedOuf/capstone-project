@@ -98,7 +98,6 @@ jobs:
           name: Install Kubectl Tool & docker
           command: |
             apk add --update sudo tar gzip curl
-            ls -al /bin/sh && sudo rm /bin/sh && sudo ln -s /bin/bash /bin/sh && ls -al /bin/sh
             curl --silent --location "https://download.docker.com/linux/static/stable/x86_64/docker-17.03.0-ce.tgz" | tar xz -C /tmp
             mv /tmp/docker /usr/local/bin
             curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
