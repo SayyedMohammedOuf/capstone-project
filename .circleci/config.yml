@@ -88,11 +88,11 @@ jobs:
             eksctl create cluster --name=myEKSCluster-5dc412a2-a11a-4322-a803-945634be867f
 
   Deploy Cluster to EKS:
-    build:
+    docker:
       - machine: python:3.7-alpine3.13
     working_directory: ~/repo
     steps:
-      - checkout
+      - checkouts
       - run:
           name: Install Kubectl Tool & docker
           command: |
