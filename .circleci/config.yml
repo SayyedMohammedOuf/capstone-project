@@ -96,17 +96,15 @@ jobs:
       - run:
           name: Install Kubectl Tool & docker
           command: |
-            apk add --update curl
-            apk update
-            apk add docker docker-compose
+            apk add --update tar gzip curl
+            curl --silent --location "https://download.docker.com/linux/static/stable/x86_64/docker-17.03.0-ce.tgz" | tar xz -C /tmp
+            mv /tmp/docker /usr/local/bin/
             curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
             install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
             kubectl version --client
       - run:
           name: Deploy Cluster
           command: |
-            rc-update add docker boot
-            service docker start
             docker pull sayyedmo/capstone-project:5dc412a2-a11a-4322-a803-945634be867f
             echo "Sayyed_1"
             # Deploy an App from the Dockerhub to the Kubernetes Cluster
