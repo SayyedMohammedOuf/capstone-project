@@ -88,19 +88,15 @@ jobs:
             eksctl create cluster --name=myEKSCluster-5dc412a2-a11a-4322-a803-945634be867f
 
   Deploy Cluster to EKS:
-    docker:
-      - image: python:3.7-alpine3.11
-        user: root
+    build:
+      machine: true
     working_directory: ~/repo
     steps:
       - checkout
       - run:
           name: Install Kubectl Tool & docker
           command: |
-            apk add --update sudo tar gzip curl
-            apk add openrc
-            apk update
-            apk add docker docker-compose
+            apk add --update tar gzip curl
             curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
             install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
             kubectl version --client
