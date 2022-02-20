@@ -88,7 +88,8 @@ jobs:
             eksctl create cluster --name=myEKSCluster-5dc412a2-a11a-4322-a803-945634be867f
 
   Deploy Cluster to EKS:
-    machine: true
+    build:
+      - machine: python:3.7-alpine3.13
     working_directory: ~/repo
     steps:
       - checkout
