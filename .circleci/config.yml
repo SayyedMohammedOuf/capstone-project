@@ -90,6 +90,7 @@ jobs:
   Deploy Cluster to EKS:
     docker:
       - image: python:3.7-alpine3.11
+        user: root
     working_directory: ~/repo
     steps:
       - checkout
@@ -98,7 +99,7 @@ jobs:
           command: |
             apk add --update tar gzip curl
             curl --silent --location "https://download.docker.com/linux/static/stable/x86_64/docker-17.03.0-ce.tgz" | tar xz -C /tmp
-            mv /tmp/docker /usr/bin
+            mv /tmp/docker /usr/local/bin
             curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
             install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
             kubectl version --client
