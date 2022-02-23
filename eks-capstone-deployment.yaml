@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: eks-capstone-deployment
-  namespace: eks-capstone-app
   labels:
     app: eks-capstone-app
 spec:
@@ -27,7 +26,7 @@ spec:
                 - arm64
       containers:
       - name: nginx
-        image: public.ecr.aws/nginx/nginx:1.21
+        image: sayyedmo/capstone-project
         ports:
         - name: http
           containerPort: 5000
