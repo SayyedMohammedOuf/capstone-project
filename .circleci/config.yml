@@ -67,9 +67,9 @@ jobs:
             # Authenticate & tag
             docker login -u="$DOCKERHUB_USERNAME" -p="$DOCKERHUB_PASSWORD"
             echo "Docker ID and Image: $dockerpath"
-            docker tag capstone-project-$CIRCLE_WORKFLOW_ID sayyedmo/capstone-project:$CIRCLE_WORKFLOW_ID
+            docker tag capstone-project-$CIRCLE_WORKFLOW_ID sayyedmo/capstone-project
             # Push image to a docker repository
-            docker push sayyedmo/capstone-project:$CIRCLE_WORKFLOW_ID
+            docker push sayyedmo/capstone-project
   Create EKS Cluster:
     docker:
       - image: python:3.7-alpine3.11
@@ -85,7 +85,7 @@ jobs:
       - run:
           name: Create EKS Cluster
           command: |
-            eksctl create cluster --name=myEKSCluster-5dc412a2-a11a-4322-a803-945634be867f
+            eksctl create cluster --name=myEKSCluster-$CIRCLE_WORKFLOW_ID
 
   Deploy Cluster to EKS:
     docker:
@@ -97,7 +97,7 @@ jobs:
       - setup_remote_docker:
           docker_layer_caching: true
       - run:
-          name: Install Kubectl Tool & docker
+          name: Install Kubectl Tool
           command: |
             curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
             install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
@@ -105,29 +105,26 @@ jobs:
       - run:
           name: Deploy Cluster
           command: |
-            docker pull sayyedmo/capstone-project:5dc412a2-a11a-4322-a803-945634be867f
-            echo "Sayyed_1"
-            # Deploy an App from the Dockerhub to the Kubernetes Cluster
-            kubectl create deploy capstone-project-5dc412a2-a11a-4322-a803-945634be867f --image=sayyedmo/capstone-project:5dc412a2-a11a-4322-a803-945634be867f
-            echo "Sayyed_2"
+            docker pull sayyedmo/capstone-project
+            echo "<-- IMAGE PULLED! --> "
+            kubectl create namespace eks-capstone-app
+            echo "<-- EKS NAMESPACE CREATED! --> "
+            kubectl apply -f eks-capstone-deployment.yaml
+            echo "<-- CLUSTER DEPLOYED! --> "
             # See the status
             app_pod = kubectl get pods --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}'
             echo "APP_POD: "
             echo $app_pod
-            # Port forward
-            kubectl port-forward $app_pod --address 0.0.0.0 5000:5000
-            echo "FINAL"
-
 
 workflows:
   default:
     jobs:
-#      - Linting
-#      - Testing:
-#          requires: [Linting]
-#      - Push Docker Container To Dockerhub Repo:
-#          requires: [Testing]
-#      - Create EKS Cluster:
-#          requires: [Push Docker Container To Dockerhub Repo]
-      - Deploy Cluster to EKS
-#          requires: [Create EKS Cluster]
+      - Linting
+      - Testing:
+          requires: [Linting]
+      - Push Docker Container To Dockerhub Repo:
+          requires: [Testing]
+      - Create EKS Cluster:
+          requires: [Push Docker Container To Dockerhub Repo]
+      - Deploy Cluster to EKS:
+          requires: [Create EKS Cluster]
