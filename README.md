@@ -10,11 +10,16 @@
 - Create EKS Cluster Step
 - Deploy App To EKS Cluster Step. [using rolling deployment]
 
+###Notes:
+- I can't access aws console!!
+- I've an issue in the last step, kindly check this link:
+ [The connection to the server localhost:8080 was refused - did you specify the right host or port?
+]
+https://app.circleci.com/pipelines/github/SayyedMohammedOuf/capstone-project/50/workflows/c1d16ef6-94a1-4e3a-943e-2425a7597e52/jobs/69
 
+- Also I've added a screenshot of the deploying the cluster to EKS in the screenshots folder.
 
-#### Sorry for submitting the project with missing requirements, but I have posted the issues I have in the knowledge center but I did not get any help to proceed with the project, please check the following links for more details about the issue I have now:
+#### I have posted the issues I have in the knowledge center but I did not get any help, please check the following links for more details about the issue I have now:
 
 - https://knowledge.udacity.com/questions/799821
 - https://knowledge.udacity.com/questions/798559
-
-##### So I decided to submit the project, to get help from the reviewers.
