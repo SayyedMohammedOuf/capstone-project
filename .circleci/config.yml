@@ -117,12 +117,12 @@ jobs:
 workflows:
   default:
     jobs:
-#      - Linting
-#      - Testing:
-#          requires: [Linting]
-#      - Push Docker Container To Dockerhub Repo:
-#          requires: [Testing]
-#      - Create EKS Cluster:
-#          requires: [Push Docker Container To Dockerhub Repo]
-      - Deploy Cluster to EKS
-#          requires: [Create EKS Cluster]
+      - Linting
+      - Testing:
+          requires: [Linting]
+      - Push Docker Container To Dockerhub Repo:
+          requires: [Testing]
+      - Create EKS Cluster:
+          requires: [Push Docker Container To Dockerhub Repo]
+      - Deploy Cluster to EKS:
+          requires: [Create EKS Cluster]
